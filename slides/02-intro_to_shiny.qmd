@@ -1,5 +1,5 @@
 ---
-title: "Intro to Shiny"
+title: "Getting Started with Shiny"
 author: "Howard Baek"
 institute: "Fred Hutch Data Science Lab (DaSL)"
 format: 
@@ -12,6 +12,10 @@ format:
     self-contained: true
 execute:
   echo: true
+title-slide-attributes:
+    data-background-image: "images/shiny.png"
+    data-background-size: cover
+    data-background-opacity: "0.33"
 ---
 
 ```{r setup}
@@ -19,23 +23,34 @@ execute:
 library(shiny)
 ```
 
+## Goal of this talk
+
+
+![](images/taste.jpg){fig-align="center"}
+
+
+Photo by <a href="https://unsplash.com/@khlebnikovayulia?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Yulia Khlebnikova</a> on <a href="https://unsplash.com/photos/FDYbS43jUrU?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
+ 
+
+
 ## Agenda
 
 - Introduction to Shiny
 - Structure of a Shiny App
 - Demo Shiny App
-- Layouts
-- Gallery
-- Troubleshooting and Sharing
+- Layouts of Shiny
+- Shiny Gallery
+- Troubleshooting
+- Sharing your Shiny App Online
 
 
 ## Shiny
 
-> Shiny is an R package that makes it easy to build interactive web apps straight from R. No knowledge of HTML, CSS, or JavaScript is required. But, it is fully customizable and extensible with HTML/CSS/JavaScript. Shiny lets you write R code to create web applications.
+> Shiny is an R package that makes it easy to build interactive web apps straight from R. No knowledge of HTML, CSS, or JavaScript is required, but it is fully customizable and extensible with these languages. Essentially, Shiny lets you write R and create web applications.
 
 ## Usage of Shiny
 
-- Academia: Teaching tool for statistical concepts
+- Academia: Teaching tool for statistical concepts and for new statistical methods.
 - Big Pharma: Collaboration between scientists and analysts during drug development
 - Big Tech: Set up real-time metrics dashboards 
 - Many others...
@@ -67,7 +82,7 @@ shinyApp(ui = ui, server = server)
 ```{r}
 #| eval: false
 #| echo: true
-#| code-line-numbers: "|1|3-4|6-7|9-10|12-13|15-20|24-25|27-28|34-35|37-50|52-53|54-55"
+#| code-line-numbers: "|1|3-4|6-7|9-10|12-13|15-20|24-25|27-28|34-52|54-55"
 library(shiny)
 
 # Define UI for app that draws a histogram
@@ -76,10 +91,10 @@ ui <- fluidPage(
   # App title
   titlePanel("Hello Shiny!"),
   
-  # Sidebar layout with input and output definitions
+  # Sidebar layout 
   sidebarLayout(
     
-    # Sidebar panel for inputs
+    # Sidebar panel
     sidebarPanel(
       
       # Input: Slider for the number of bins
@@ -125,12 +140,9 @@ server <- function(input, output) {
 shinyApp(ui = ui, server = server)
 ```
 
-
-## Live: Hello Shiny!
-
 # Layouts
 
-## Sidebar layout
+## Single Page: Sidebar layout
 
 ![](images/layout-sidebar.png){fig-align="center" width="60%"}
 
@@ -138,7 +150,7 @@ shinyApp(ui = ui, server = server)
 From [Mastering Shiny](https://mastering-shiny.org/action-layout.html#page-with-sidebar)
 :::
 
-## Multi-row layout
+## Single Page: Multi-row layout
 
 ![](images/layout-fluidrow.png){fig-align="center" width="60%"}
 
@@ -146,7 +158,7 @@ From [Mastering Shiny](https://mastering-shiny.org/action-layout.html#page-with-
 From [Mastering Shiny](https://mastering-shiny.org/action-layout.html#multi-row)
 :::
 
-## Horizontal Tabs with `tabsetPanel()`
+## Multi-page: Horizontal Tabs with `tabsetPanel()`
 
 ![](images/tabset.png){fig-align="center" width="60%"}
 
@@ -156,7 +168,7 @@ From [Mastering Shiny](https://mastering-shiny.org/action-layout.html#tabsets)
 :::
 
 
-## Vertical Tabs with `navListPanel()`
+## Multi-page: Vertical Tabs with `navListPanel()`
 
 ![](images/navlistPanel.png){fig-align="center" width="60%"}
 
@@ -165,7 +177,7 @@ From [Mastering Shiny](https://mastering-shiny.org/action-layout.html#navlists-a
 :::
 
 
-## Dashboards
+## Multi-page: Dashboards
 
 ![](images/crandash.png){fig-align="center" width="40%"}
 
@@ -254,28 +266,36 @@ shinyApp(ui = ui, server = server)
 
 ## Share your Shiny Applications Online
 
-
-::: {style="text-align: left"}
+::: {style="text-align: left"} 
 [shinyapps.io](https://www.shinyapps.io/)
 :::
+
+- shinyapps.io is a software as a service (SaaS) product that makes it easy to share your Shiny apps online.
+- It runs in the cloud on shared servers by Posit.
+- It has both free and paid plans.
 
 
 ## Further Resources
 
-- Hadley Wickham's [Mastering Shiny book](https://mastering-shiny.org/index.html)
-- Posit's [Get Started Tutorials](https://shiny.posit.co/r/getstarted/shiny-basics/lesson1/index.html)
-- Posit's [Shiny Articles](https://shiny.posit.co/r/articles/#start)
-- [Article on shinyapps.io](https://shiny.posit.co/r/articles/share/shinyapps/)
+- [Mastering Shiny book](https://mastering-shiny.org/index.html)
+- [Get Started Tutorials](https://shiny.posit.co/r/getstarted/shiny-basics/lesson1/index.html)
+- [Shiny Articles](https://shiny.posit.co/r/articles/#start)
+- [shinyapps.io Articles](https://shiny.posit.co/r/articles/share/shinyapps/)
+- [Shiny Application Layout Guide](https://shiny.posit.co/r/articles/build/layout-guide/)
+- [shinyapps.io User Guide](https://docs.posit.co/shinyapps.io/?_gl=1*acevi2*_ga*NDcwMjYxMTc2LjE2ODYxNzIxMjQ.*_ga_HXP006LBGY*MTY5NjAwNzY3MS40LjEuMTY5NjAwNzY4My4wLjAuMA..)
 
-
-## Thank you!
-
-
-![](images/shiny.png){fig-align="center" width="40%"}
 
 
 ## Reference
 
 - [Getting Started with Shiny for R - posit::conf 2023](https://github.com/posit-conf-2023/shiny-r-intro)
 
+
+
+
+
+## Thank you!
+
+
+![](images/shiny.png){fig-align="center" width="40%"}
 

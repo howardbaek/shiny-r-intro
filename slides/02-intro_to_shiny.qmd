@@ -1,6 +1,7 @@
 ---
 title: "Intro to Shiny"
 author: "Howard Baek"
+institute: "Fred Hutch Data Science Lab (DaSL)"
 format: 
   revealjs:
     logo: images/shiny.png
@@ -18,16 +19,26 @@ execute:
 library(shiny)
 ```
 
+## Agenda
+
+- Introduction to Shiny
+- Structure of a Shiny App
+- Demo Shiny App
+- Layouts
+- Gallery
+- Troubleshooting and Sharing
+
+
 ## Shiny
 
-> Shiny is an R package that makes it easy to build interactive web apps straight from R. No knowledge of HTML, CSS, or JavaScript is required.It is fully customizable and extensible with HTML/CSS/JavaScript. Shiny lets you write R code to create web applications.
+> Shiny is an R package that makes it easy to build interactive web apps straight from R. No knowledge of HTML, CSS, or JavaScript is required. But, it is fully customizable and extensible with HTML/CSS/JavaScript. Shiny lets you write R code to create web applications.
 
 ## Usage of Shiny
 
 - Academia: Teaching tool for statistical concepts
 - Big Pharma: Collaboration between scientists and analysts during drug development
-- Big Tech: Set up realtime metrics dashboards 
-- ...
+- Big Tech: Set up real-time metrics dashboards 
+- Many others...
 
 
 ## Structure of a Shiny App
@@ -51,12 +62,12 @@ shinyApp(ui = ui, server = server)
 ```
 
 
-## Demo: Hello Shiny!
+## Demo App: Hello Shiny!
 
 ```{r}
 #| eval: false
 #| echo: true
-#| code-line-numbers: "|1|3-4|6-7|9-10|12-13|15-20|24-25|27-28|34-35|37-50|52-53"
+#| code-line-numbers: "|1|3-4|6-7|9-10|12-13|15-20|24-25|27-28|34-35|37-50|52-53|54-55"
 library(shiny)
 
 # Define UI for app that draws a histogram
@@ -106,7 +117,7 @@ server <- function(input, output) {
          xlab = "Waiting time to next eruption (in mins)",
          main = "Histogram of waiting times")
     
-  }
+  })
   
 }
 
@@ -115,7 +126,7 @@ shinyApp(ui = ui, server = server)
 ```
 
 
-# Hello Shiny!
+## Live: Hello Shiny!
 
 # Layouts
 
@@ -156,10 +167,10 @@ From [Mastering Shiny](https://mastering-shiny.org/action-layout.html#navlists-a
 
 ## Dashboards
 
-![](images/crandash.png){fig-align="center" width="60%"}
+![](images/crandash.png){fig-align="center" width="40%"}
 
 
-
+# Gallery
 
 
 ## Shiny Widgets Gallery
@@ -174,13 +185,11 @@ From [Mastering Shiny](https://mastering-shiny.org/action-layout.html#navlists-a
 
 ## Shiny App Gallery
 
-::: {style="text-align: left"}
-[Feature Demos](https://shiny.posit.co/r/gallery/#feature-demos)
-:::
-
+# Troubleshooting and Sharing your Shiny App Online
 
 ## Troubleshooting
 
+Missing parenthesis, commas, and typos
 
 ```{r}
 #| eval: false
@@ -189,37 +198,59 @@ library(shiny)
 
 # Define UI for app that draws a histogram
 ui <- fluidPage(
+  
   # App title
-  titlePanel("Hello Shiny!"
+  titlePanel("Hello Shiny!"),
   
   # Sidebar layout with input and output definitions
   sidebarLayout(
+    
     # Sidebar panel for inputs
     sidebarPanel(
+      
       # Input: Slider for the number of bins
       sliderInput(inputId = "bins",
                   label = "Number of bins:",
                   min = 1,
                   max = 50,
-                  value = 30
+                  value = 30)
+      
     ),
     
     # Main panel for displaying outputs
     mainPanel(
+      
       # Output: Histogram
       plotOutput(outputId = "distPlot")
+      
     )
   )
 )
-             
+
 # Define server code required to draw a histogram
 server <- function(input, output) {
+  
+  # Histogram of the Old Faithful Geyser Data
+  # with requested number of bins
+  # Code that generates a histogram is wrapped in a call
+  # to renderPlot.
+  output$distPlot <- renderPlot({
+    
+    x <- faithful$waiting
+    bins <- seq(min(x), max(x), length.out = input$bins + 1)
+    
+    hist(x, breaks = bins, col = "#007bc2", border = "white",
+         xlab = "Waiting time to next eruption (in mins)",
+         main = "Histogram of waiting times")
+    
+  })
+  
 }
-             
+
 # Create shiny app
 shinyApp(ui = ui, server = server)
 ```
-             
+
 
 ## Share your Shiny Applications Online
 
@@ -229,4 +260,22 @@ shinyApp(ui = ui, server = server)
 :::
 
 
-             
+## Further Resources
+
+- Hadley Wickham's [Mastering Shiny book](https://mastering-shiny.org/index.html)
+- Posit's [Get Started Tutorials](https://shiny.posit.co/r/getstarted/shiny-basics/lesson1/index.html)
+- Posit's [Shiny Articles](https://shiny.posit.co/r/articles/#start)
+- [Article on shinyapps.io](https://shiny.posit.co/r/articles/share/shinyapps/)
+
+
+## Thank you!
+
+
+![](images/shiny.png){fig-align="center" width="40%"}
+
+
+## Reference
+
+- [Getting Started with Shiny for R - posit::conf 2023](https://github.com/posit-conf-2023/shiny-r-intro)
+
+

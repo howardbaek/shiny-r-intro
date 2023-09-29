@@ -1,20 +1,16 @@
 ---
-title: "Getting Started with Shiny<br/>Intro to Shiny"
-author: "Colin Rundel"
+title: "Intro to Shiny"
+author: "Howard Baek"
 format: 
   revealjs:
     logo: images/shiny.png
-    footer: "posit::conf 2023 - Getting Started with Shiny"
+    footer: "Baltimore Community Data Science (PH.140.801 + 802)"
     slide-number: true
     highlight-style: a11y
     theme: [default, custom.scss]
     self-contained: true
 execute:
   echo: true
-title-slide-attributes:
-    data-background-image: "images/Hyatt-Regency-Chicago.webp"
-    data-background-size: cover
-    data-background-opacity: "0.33"
 ---
 
 ```{r setup}
@@ -24,102 +20,102 @@ library(shiny)
 
 ## Shiny
 
-> Shiny is an R package that makes it easy to build interactive web apps straight from R. You can host standalone apps on a webpage or embed them in R Markdown documents or build dashboards. You can also extend your Shiny apps with CSS themes, htmlwidgets, and JavaScript actions.
+> Shiny is an R package that makes it easy to build interactive web apps straight from R. No knowledge of HTML, CSS, or JavaScript is required.It is fully customizable and extensible with HTML/CSS/JavaScript. Shiny lets you write R code to create web applications.
 
-## Shiny App
+## Usage of Shiny
 
-<br/>
-
-::: columns
-::: {.column width="40%" .larger}
-Server
-
-::: {style="border: 2px solid; border-radius: 5px; text-align:center; font-size: 90px; height: 250px"}
-`r fontawesome::fa("r-project")` + `r fontawesome::fa("server")`
-:::
-:::
-
-::: {.column width="20%"}
-::: {style="text-align: center; font-size: 90px; padding-top: 20px"}
-<br/>⇄
-:::
-:::
+- Academia: Teaching tool for statistical concepts
+- Big Pharma: Collaboration between scientists and analysts during drug development
+- Big Tech: Set up realtime metrics dashboards 
+- ...
 
 
-::: {.column width="40%" .larger}
-Client / Browser
-
-::: {style="border: 2px solid; border-radius: 5px; text-align: center; height: 250px"}
-::: {style="font-size: 90px"}
-`r fontawesome::fa("file-code")`
-:::
-
-::: {style="font-size: 50px"}
-`r fontawesome::fa("html5")` + `r fontawesome::fa("js")` + `r fontawesome::fa("css3")`
-:::
-:::
-
-:::
-
-:::
-
-
-## Anatomy of an App
+## Structure of a Shiny App
 
 ```{r shiny-anatomy}
 #| eval: false
 #| echo: true
-#| code-line-numbers: "|3-8|4|6-8"
+#| code-line-numbers: "|1|3-5|7-9|11-12"
 library(shiny)
 
-shinyApp(
-  ui = list(),
-  
-  server = function(input, output, session) {
-  
-  }
+ui <- fluidPage(
+  # UI code
 )
+
+server <- function(input, output) {
+  # Server code
+}
+
+# Create shiny app
+shinyApp(ui = ui, server = server)
 ```
 
 
-## Demo 01 - A Basic Example
+## Demo: Hello Shiny!
 
-::: {.code-file .sourceCode .cell-code}
-`r fontawesome::fa("file")` `demos/demo01.R`
-:::
 ```{r}
 #| eval: false
-#| code-line-numbers: "|1-3|5-28|6-19|20-28"
-#| file: "../demos/demo01.R"
+#| echo: true
+#| code-line-numbers: "|1|3-4|6-7|9-10|12-13|15-20|24-25|27-28|34-35|37-50|52-53"
+library(shiny)
+
+# Define UI for app that draws a histogram
+ui <- fluidPage(
+  
+  # App title
+  titlePanel("Hello Shiny!"),
+  
+  # Sidebar layout with input and output definitions
+  sidebarLayout(
+    
+    # Sidebar panel for inputs
+    sidebarPanel(
+      
+      # Input: Slider for the number of bins
+      sliderInput(inputId = "bins",
+                  label = "Number of bins:",
+                  min = 1,
+                  max = 50,
+                  value = 30)
+      
+    ),
+    
+    # Main panel for displaying outputs
+    mainPanel(
+      
+      # Output: Histogram
+      plotOutput(outputId = "distPlot")
+      
+    )
+  )
+)
+
+# Define server code required to draw a histogram
+server <- function(input, output) {
+  
+  # Histogram of the Old Faithful Geyser Data
+  # with requested number of bins
+  # Code that generates a histogram is wrapped in a call
+  # to renderPlot.
+  output$distPlot <- renderPlot({
+    
+    x    <- faithful$waiting
+    bins <- seq(min(x), max(x), length.out = input$bins + 1)
+    
+    hist(x, breaks = bins, col = "#007bc2", border = "white",
+         xlab = "Waiting time to next eruption (in mins)",
+         main = "Histogram of waiting times")
+    
+  }
+  
+}
+
+# Create shiny app
+shinyApp(ui = ui, server = server)
 ```
 
 
-## Your turn - Exercise 01
-
-Copy the code from the previous slide (or open `exercises/ex01.R`) and try running it using the Run App button.
-
-Check that you are able successfully run the shiny app and are able to interact with it. 
-
-* If everything is working try modifying the code (e.g. try adding or removing a city from `radioButtons()`).
-
-* What happens if you add a city that is not in the `weather.csv` data set to the radio button input?
-
-```{r}
-#| echo: false
-countdown::countdown(5)
-```
-
-
-## Troubleshooting
-
-A couple of quick tips:
-
-- If the app can't find the data, make sure you have opened the workshop's RStudio project
-
-- Make sure you have the latest versions of `shiny` and `tidyverse` installed
-
-- If you are stuck, ask a neighbor for help and/or raise your hand and myself or a TA will come by
-
+# Hello Shiny!
 
 # Layouts
 
@@ -139,27 +135,32 @@ From [Mastering Shiny](https://mastering-shiny.org/action-layout.html#page-with-
 From [Mastering Shiny](https://mastering-shiny.org/action-layout.html#multi-row)
 :::
 
-## Other layouts
+## Horizontal Tabs with `tabsetPanel()`
 
--   Tabsets 
-    
-    - see `tabsetPanel()`
+![](images/tabset.png){fig-align="center" width="60%"}
 
--   Navbars and navlists
 
-    -   See `navlistPanel()`
-    
-    -   and `navbarPage()`
+::: aside
+From [Mastering Shiny](https://mastering-shiny.org/action-layout.html#tabsets)
+:::
 
-- Dashboards
-    
-    - [flexdashboard](https://pkgs.rstudio.com/flexdashboard/)
-    
-    - [Shinydashboard](https://rstudio.github.io/shinydashboard/)
-    
-    - [bslib](https://rstudio.github.io/bslib/)
 
-# Input Widgets
+## Vertical Tabs with `navListPanel()`
+
+![](images/navlistPanel.png){fig-align="center" width="60%"}
+
+::: aside
+From [Mastering Shiny](https://mastering-shiny.org/action-layout.html#navlists-and-navbars)
+:::
+
+
+## Dashboards
+
+![](images/crandash.png){fig-align="center" width="60%"}
+
+
+
+
 
 ## Shiny Widgets Gallery
 
@@ -171,34 +172,61 @@ From [Mastering Shiny](https://mastering-shiny.org/action-layout.html#multi-row)
 
 </iframe>
 
+## Shiny App Gallery
 
-## A brief widget tour
-
-::: {style="text-align: center"}
-[rundel.shinyapps.io/widgets/](https://rundel.shinyapps.io/widgets/)
+::: {style="text-align: left"}
+[Feature Demos](https://shiny.posit.co/r/gallery/#feature-demos)
 :::
 
 
-<iframe data-src="https://rundel.shinyapps.io/widgets/" width="100%" height="500px" style="border:1px solid;border-radius: 5px;" data-external="1">
-
-</iframe>
-
-
-## Your turn - Exercise 02
-
-We've just seen a number of alternative input widgets.
-
-Starting from the code in `exercises/ex02.R` try changing the `radioButton()` input to something else.
-
-What happens if you use an input capable of selecting multiple values 
-
-* e.g. `checkboxGroupInput()` 
-
-* or `selectInput(multiple = TRUE)`?
+## Troubleshooting
 
 
 ```{r}
-#| echo: false
-countdown::countdown(6)
-```
+#| eval: false
+#| echo: true
+library(shiny)
 
+# Define UI for app that draws a histogram
+ui <- fluidPage(
+  # App title
+  titlePanel("Hello Shiny!"
+  
+  # Sidebar layout with input and output definitions
+  sidebarLayout(
+    # Sidebar panel for inputs
+    sidebarPanel(
+      # Input: Slider for the number of bins
+      sliderInput(inputId = "bins",
+                  label = "Number of bins:",
+                  min = 1,
+                  max = 50,
+                  value = 30
+    ),
+    
+    # Main panel for displaying outputs
+    mainPanel(
+      # Output: Histogram
+      plotOutput(outputId = "distPlot")
+    )
+  )
+)
+             
+# Define server code required to draw a histogram
+server <- function(input, output) {
+}
+             
+# Create shiny app
+shinyApp(ui = ui, server = server)
+```
+             
+
+## Share your Shiny Applications Online
+
+
+::: {style="text-align: left"}
+[shinyapps.io](https://www.shinyapps.io/)
+:::
+
+
+             
